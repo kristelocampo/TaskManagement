@@ -95,31 +95,21 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $query->getResult();
     }
 
-    public function getProjectUser($value)
+    public function getAllDetails()
     {
-        return $this->createQueryBuilder( 'SELECT
-                projects.name AS ProjectName,
-                projects.description AS ProjectDescription,
-                tasks.title AS TaskTitle,
-                tasks.description AS TaskDescription,
-                tasks.start_date ,
-                tasks.due_date,
-                priority.name AS Priority,
-                status.status,
-                CONCAT(user.firstname, \' \', user.lastname) AS Fullname
-              
-            FROM
-                App\Entity\Tasks tasks
-            JOIN tasks.project_id projects
-            JOIN tasks.priority_id priority
-            JOIN tasks.status_id status
-            JOIN tasks.user_id user
-            WHERE
-                user.email = :email)')
-            ->andWhere('u.email = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('user')
+            ->select('user.email, CONCAT(user.firstname, \' \', user.lastname) AS Name, 
+                projects.name AS projectName, projects.description AS projectDescription, tasks.title AS taskTitle, 
+                tasks.description AS taskDescription, tasks.start_date, 
+                tasks.due_date, status.status, priority.name AS Priority, comments.title AS commentTitle, 
+                comments.comment AS commentDescription')
+            ->join('user.project_id', 'projects')
+            ->join('user.task_id', 'tasks')
+            ->join('tasks.priority_id', 'priority')
+            ->join('tasks.status_id', 'status')
+            ->join('user.comment_id', 'comments')
             ->getQuery()
-            ;
+            ->getResult();
     }
 
 //    /**

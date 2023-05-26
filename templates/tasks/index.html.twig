@@ -13,6 +13,10 @@
                 <th>Description</th>
                 <th>Due_date</th>
                 <th>Start_date</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Comment Title</th>
+                <th>Comment Description</th>
                 <th>Add Comment</th>
                 <th>actions</th>
             </tr>
@@ -23,9 +27,13 @@
                 <td>{{ task.id }}</td>
                 <td>{{ task.title }}</td>
                 <td>{{ task.description }}</td>
-                <td>{{ task.dueDate ? task.dueDate|date('d-m-Y') : '' }}</td>
-                <td>{{ task.startDate ? task.startDate|date('d-m-Y') : '' }}</td>
-                <td><a href="{{ path('app_comments_new') }}">Add Comment</a></td>
+                <td>{{ task.start_date ? task.start_date|date('d-m-Y') : '' }}</td>
+                <td>{{ task.due_date ? task.due_date|date('d-m-Y') : '' }}</td>
+                <td>{{ task.Priority }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.commentTitle }}</td>
+                <td>{{ task.commentDescription }}</td>
+                <td><a href="{{ path('app_comment_task', {'id': task.id}) }}">Add Comment</a></td>
                 <td>
                     <a href="{{ path('app_tasks_show', {'id': task.id}) }}">show</a>
                     <a href="{{ path('app_tasks_edit', {'id': task.id}) }}">edit</a>

@@ -67,7 +67,7 @@ class TasksRepository extends ServiceEntityRepository
                 priority.name AS Priority,
                 status.status,
                 CONCAT(user.firstname, \' \', user.lastname) AS Fullname
-              
+     
             FROM
                 App\Entity\Tasks tasks
             JOIN tasks.project_id projects
@@ -77,6 +77,38 @@ class TasksRepository extends ServiceEntityRepository
         ');
 
         return $query->getResult();
+    }
+
+    public function getWithComments(){
+        $query = $this->getEntityManager()->createQuery('
+                    SELECT 
+                        tasks.title, 
+                        tasks.description, 
+                        tasks.start_date, 
+                        tasks.due_date, 
+                        status.status , 
+                        priority.name AS Priority,
+                        comments.title,
+                        comments.description
+                        
+                    FROM App\Entity\Tasks tasks         
+                    JOIN tasks.priority_id priority
+                    JOIN tasks.status_id status
+                    JOIN tasks.id comments ON comments.task_id = tasks.id
+                    ');
+
+        return $query->getResult();
+    }
+
+    public function getTaskDetails()
+    {
+        return $this->createQueryBuilder('tasks')
+            ->select('tasks.id, tasks.title, tasks.description, tasks.start_date, tasks.due_date, priority.name AS Priority, status.status, comments.title AS commentTitle, comments.comment as commentDescription')
+            ->join('tasks.comment_id', 'comments')
+            ->join('tasks.priority_id', 'priority')
+            ->join('tasks.status_id', 'status')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

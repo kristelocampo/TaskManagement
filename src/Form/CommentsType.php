@@ -18,7 +18,6 @@ class CommentsType extends AbstractType
         $builder
             ->add('title')
             ->add('comment')
-            ->add('created_at')
         ;
     }
 

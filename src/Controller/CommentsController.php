@@ -28,7 +28,6 @@ class CommentsController extends AbstractController
 
         $user = $security->getUser();
 
-
         if($user == null)
         {
             throw $this->createAccessDeniedException('You must Login');
@@ -36,11 +35,12 @@ class CommentsController extends AbstractController
 
         $comment = new Comments();
         $comment->setUserId($user);
+
         $form = $this->createForm(CommentsType::class, $comment);
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
+
             $commentsRepository->save($comment, true);
 
             return $this->redirectToRoute('app_comments_index', [], Response::HTTP_SEE_OTHER);

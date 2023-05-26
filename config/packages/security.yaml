@@ -40,6 +40,8 @@ security:
         - { path: ^/user/admin, roles: 'ROLE_ADMIN' }
         - { path: ^/user/profile, roles: 'ROLE_USER' }
         - { path: ^/comments, roles: 'ROLE_USER' }
+        - { path: ^/projects, roles: ['ROLE_USER', 'ROLE_ADMIN'] }
+        - { path: ^/tasks, roles: ['ROLE_USER', 'ROLE_ADMIN'] }
 when@test:
     security:
         password_hashers:

@@ -20,8 +20,6 @@ class Comments
     #[ORM\Column(type: Types::TEXT)]
     private ?string $comment = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\ManyToOne(inversedBy: 'comment_id')]
     private ?Tasks $task_id = null;
@@ -54,18 +52,6 @@ class Comments
     public function setComment(string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
-    {
-        $this->created_at = $created_at;
 
         return $this;
     }

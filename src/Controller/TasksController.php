@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Comments;
 use App\Entity\Tasks;
+use App\Form\CommentsType;
 use App\Form\TasksType;
+use App\Repository\CommentsRepository;
 use App\Repository\TasksRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,8 +21,11 @@ class TasksController extends AbstractController
     #[Route('/', name: 'app_tasks_index', methods: ['GET'])]
     public function index(TasksRepository $tasksRepository): Response
     {
+//        $tasks = $tasksRepository->getTaskDetails();
+//
+//        dd($tasks);
         return $this->render('tasks/index.html.twig', [
-            'tasks' => $tasksRepository->findAll(),
+            'tasks' => $tasksRepository->getTaskDetails(),
         ]);
     }
 
@@ -75,4 +83,51 @@ class TasksController extends AbstractController
 
         return $this->redirectToRoute('app_tasks_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/{id}/comment/new', name: 'app_comment_task', methods: ['GET', 'POST'])]
+    public function commentTask(
+                    Request $request,
+                    CommentsRepository $commentsRepository,
+                    Security $security, $id,
+                    EntityManagerInterface $entityManager): Response
+    {
+        //Get userID login data
+        $user = $security->getUser();
+
+
+        if($user == null)
+        {
+            throw $this->createAccessDeniedException('You must Login');
+        }
+
+
+        $task = $entityManager->getRepository(Tasks::class)->find($id);
+
+
+        if (!$task) {
+            throw $this->createNotFoundException('Task not found');
+        }
+
+
+
+        $comment = new Comments();
+        $comment->setUserId($user);
+        $comment->setTaskId($task);
+
+        $form = $this->createForm(CommentsType::class, $comment);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentsRepository->save($comment, true);
+
+            return $this->redirectToRoute('app_comments_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('comments/new.html.twig', [
+            'comment' => $comment,
+            'form' => $form,
+        ]);
+    }
+
 }

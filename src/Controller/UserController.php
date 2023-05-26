@@ -72,9 +72,13 @@ class UserController extends AbstractController
         }
 
         $userDetails = $userRepository->findUserByEmail($user->getUserIdentifier());
+        $allDetails = $userRepository->getAllDetails();
+
+//        dd($allDetails);
 
         return $this->render('user/admin.html.twig', [
             'user' => $userDetails,
+            'allDetails' => $allDetails
         ]);
     }
 

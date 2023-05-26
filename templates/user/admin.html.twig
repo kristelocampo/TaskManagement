@@ -3,17 +3,47 @@
 {% block title %}Admin{% endblock %}
 
 {% block body %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Project Name</th>
+            <th>Project Description</th>
+            <th>Task Title</th>
+            <th>Task Description</th>
+            <th>Start Date</th>
+            <th>Due Date</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Comment Title</th>
+            <th>Comment Description</th>
+        </tr>
+        </thead>
+        {% for detail in allDetails %}
+        <tbody>
+        <tr>
+            <td>{{ detail.email }}</td>
+            <td>{{ detail.Name }}</td>
+            <td>{{ detail.projectName }}</td>
+            <td>{{ detail.projectDescription }}</td>
+            <td>{{ detail.taskTitle }}</td>
+            <td>{{ detail.taskDescription }}</td>
+            <td>{{ detail.start_date ? detail.start_date|date('d-m-Y') : '' }}</td>
+            <td>{{ detail.due_date ? detail.due_date|date('d-m-Y') : '' }}</td>
+            <td>{{ detail.Priority }}</td>
+            <td>{{ detail.status }}</td>
+            <td>{{ detail.commentTitle }}</td>
+            <td>{{ detail.commentDescription }}</td>
 
-    <div class="p-5 text-center bg-image"  style="background-image: url('https://mdbcdn.b-cdn.net/img/new/slides/041.webp');height: 400px;margin-top: 58px; ">
-        <div class="mask" style="background-color: rgba(0, 0, 0, 0.6);">
-            <div class="d-flex justify-content-center align-items-center h-100">
-                <div class="text-white">
-                    <h1 class="mb-3">Admin</h1>
-                    <h4 class="mb-3">Dashboard</h4>
-                    <a class="btn btn-outline-light btn-lg" href="{{ path('app_projects_index') }}" role="button">Show Projects</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 
 {% endblock %}

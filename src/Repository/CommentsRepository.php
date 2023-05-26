@@ -39,6 +39,19 @@ class CommentsRepository extends ServiceEntityRepository
         }
     }
 
+    public function getCommentTaskId($task_id)
+    {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT c
+            FROM App\Entity\Comments c
+            WHERE c.task_id = :task_id'
+        )->setParameter('task_id', $task_id);
+
+        return $query->getResult();
+    }
+
+
+
 
 //    /**
 //     * @return Comments[] Returns an array of Comments objects
