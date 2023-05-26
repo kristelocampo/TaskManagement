@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+
+
+    <table class="table">
+        <thead class="thead-light">
+        <tr>
+            <th scope="col">Project Name</th>
+            <th scope="col">Project Description</th>
+            <th scope="col">Task Title</th>
+            <th scope="col">Task Description</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">Due Date</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Status</th>
+            <th scope="col">Full name</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for details in userProject %}
+            <tr>
+                <td>{{ details.ProjectName }}</td>
+                <td>{{ details.ProjectDescription}} </td>
+                <td>{{ details.TaskTitle}} </td>
+                <td>{{ details.TaskDescription}} </td>
+                <td>{{ details.start_date ? details.start_date|date('d-m-Y') : '' }}</td>
+                <td>{{ details.due_date ? details.due_date|date('d-m-Y') : '' }}</td>
+                <td>{{ details.Priority}} </td>
+                <td>{{ details.status}} </td>
+                <td>{{ details.Fullname}} </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
